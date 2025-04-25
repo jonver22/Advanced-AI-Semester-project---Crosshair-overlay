@@ -11,14 +11,22 @@ Features
 •	Crosshair drawn at the center of the screen
 
 Project Structure
+
 .
 ├── RealTimeCrosshairOverlay.py
+
 └── models/
+
     ├── Binary_gun_nogun_detector.pt
+    
     ├── custom_classification_model_binary_gun_nogun.pt
+    
     ├── custom_classification_model_gun_detector.pt
+    
     ├── enemy_detector.pt
+
     └── gun_class_detector.pt
+
 
 •	RealTimeCrosshairOverlay.py: Main application script
 •	models/: Pre-trained YOLO model weights
