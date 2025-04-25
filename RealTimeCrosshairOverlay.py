@@ -100,8 +100,8 @@ class DetectionThread(QThread):
                 new_width = int((new_height / height) * width)
                 gun_frame = cv2.resize(full_frame, (new_width, new_height))
 
-                # binary prediction (gun vs no gun) on the 360p gun frame.
-                binary_results = binary_model.predict(source=gun_frame, conf=0.4, verbose=False)
+                # binary prediction (gun vs no gun) on the full gun frame.
+                binary_results = binary_model.predict(source=full_frame, conf=0.4, verbose=False)
                 binary_preds = binary_results[0]
                 if hasattr(binary_preds.probs, "cpu"):
                     np_probs_bin = binary_preds.probs.cpu().data.numpy()
@@ -115,6 +115,7 @@ class DetectionThread(QThread):
                 # Only update message when threshold is met.
                 if binary_confidence >= CONFIDENCE_THRESHOLD:
                     if predicted_binary_class.lower() == "gun":
+                        # classification on the 360p gun frame.
                         gun_results = gun_model.predict(source=gun_frame, conf=0.4, verbose=False)
                         gun_preds = gun_results[0]
                         if hasattr(gun_preds.probs, "cpu"):
