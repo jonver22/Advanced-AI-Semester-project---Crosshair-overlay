@@ -9,8 +9,9 @@ from PyQt5.QtGui import QPainter, QColor, QFont
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 
 CONFIDENCE_THRESHOLD = 0.95
-DETECTION_DELAY = 0.1  
+DETECTION_DELAY = 0.001  
 
+# gun ranges to display -> to help decide the aim offset
 AK_range = 188
 custom_smg_range = 50
 hmlmg_range = 317
@@ -23,7 +24,7 @@ thompson_range = 90
 bolty_range = 574
 semi_rifle_range = 188
 
-# Overlay window using PyQt5, for detection info and crosshair overlay.
+# Overlay window using PyQt5 -> for detection info and crosshair overlay.
 class OverlayWindow(QWidget):
     def __init__(self, geometry):
         super().__init__()
