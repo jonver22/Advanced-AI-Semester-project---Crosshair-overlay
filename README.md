@@ -24,31 +24,30 @@ Project Structure
 
 └── models/
 
-    ├── Binary_gun_nogun_detector.pt
+ ├── Binary_gun_nogun_detector.pt
     
-    ├── custom_classification_model_binary_gun_nogun.pt
+ ├── custom_classification_model_binary_gun_nogun.pt
     
-    ├── custom_classification_model_gun_detector.pt
+ ├── custom_classification_model_gun_detector.pt
     
-    ├── enemy_detector.pt
-
-    └── gun_class_detector.pt
-
-
-    •	RealTimeCrosshairOverlay.py: Main application script
-
-    •	models/: Pre-trained YOLO model weights
+ ├── enemy_detector.pt
+ 
+ └── gun_class_detector.pt
 
 
-         o	Binary_gun_nogun_detector.pt
+•	RealTimeCrosshairOverlay.py: Main application script
 
-         o	custom_classification_model_binary_gun_nogun.pt
+•	models/: Pre-trained YOLO model weights
 
-         o	custom_classification_model_gun_detector.pt
+   -	Binary_gun_nogun_detector.pt
 
-         o	enemy_detector.pt
+   -    custom_classification_model_binary_gun_nogun.pt
 
-         o	gun_class_detector.pt
+   -	custom_classification_model_gun_detector.pt
+
+   -	enemy_detector.pt
+
+   -	gun_class_detector.pt
 
 
 Requirements
@@ -96,15 +95,15 @@ How It Works
 
 •	Detection Thread: A QThread subclass (DetectionThread) continuously:
 
-     1.	Captures a frame
+  1.	Captures a frame
    
-     2.	Runs binary (gun/no-gun) detection on a resized 360p image
+  2.	Runs binary (gun/no-gun) detection on a resized 360p image
    
-     3.	If gun is detected, classifies the gun type and computes range
+  3.	If gun is detected, classifies the gun type and computes range
    
-     4.	Runs enemy detection on the full-resolution image
+  4.	Runs enemy detection on the full-resolution image
    
-     5.	Emits results via a Qt signal
+  5.	Emits results via a Qt signal
     
 •	Overlay Window: A QWidget subclass (OverlayWindow) listens for updates, then:
 
