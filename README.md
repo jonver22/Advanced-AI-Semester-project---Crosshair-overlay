@@ -28,6 +28,7 @@ Project Structure
 ```
 
 • **RealTimeCrosshairOverlay.py**: Main application script
+
 • **models/**: Pre-trained YOLO model weights
 
 * Binary\_gun\_nogun\_detector.pt
@@ -61,13 +62,13 @@ Usage
 
 1. Clone the repository.
    
-3. Run the application:
+2. Run the application:
    
 
    ```bash
    python RealTimeCrosshairOverlay.py
    ```
-5. Launch the game **Rust**, or open the **example video** included in this repo in full-screen mode. The example video demonstrates the overlay in action, with the correct predictions shown in **pink** at the top right corner. The first 2 minutes focuses on testing the different gun types, and the section after that thoroughly tests the enemy detection model using large-group gameplay. You can also search for any gameplay video on **YouTube** to test the application, but note that there are many aspects to Rust beyond guns and enemies, so testing on random YouTube videos may not quickly cover all scenarios.
+ 3. Launch the game **Rust**, or open the **example video** included in this repo in full-screen mode. The example video demonstrates the overlay in action, with the correct predictions shown in **pink** at the top right corner. The first 2 minutes focuses on testing the different gun types, and the section after that thoroughly tests the enemy detection model using large-group gameplay. You can also search for any gameplay video on **YouTube** to test the application, but note that there are many aspects to Rust beyond guns and enemies, so testing on random YouTube videos may not quickly cover all scenarios.
 
 When running, the overlay window will appear on your primary monitor, showing:
 
@@ -85,13 +86,13 @@ How It Works
 
 1. Captures a frame
    
-3. Runs binary (gun/no-gun) detection on a resized 360p image
+2. Runs binary (gun/no-gun) detection on a resized 360p image
    
-5. If a gun is detected, classifies the gun type and retrieves range values
+3. If a gun is detected, classifies the gun type and retrieves range values
    
-7. Runs enemy detection on the full-resolution image
+4. Runs enemy detection on the full-resolution image
    
-9. Emits results via a Qt signal
+5. Emits results via a Qt signal
    • **Overlay Window**: A QWidget subclass (OverlayWindow) listens for updates, then:
 
 * Draws text messages (gun info)
