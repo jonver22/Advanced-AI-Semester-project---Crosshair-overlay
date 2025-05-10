@@ -24,7 +24,7 @@ thompson_range = 90
 bolty_range = 574
 semi_rifle_range = 188
 
-# Overlay window using PyQt5 -> for detection info and crosshair overlay.
+# Overlay window using PyQt5 -> for detection info + crosshair overlay
 class OverlayWindow(QWidget):
     def __init__(self, geometry):
         super().__init__()
@@ -32,8 +32,8 @@ class OverlayWindow(QWidget):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setGeometry(geometry["left"], geometry["top"], geometry["width"], geometry["height"])
-        self.messages = []          # List text messages.
-        self.enemy_boxes = []       # List enemy bounding boxes.
+        self.messages = []          # List text messages
+        self.enemy_boxes = []       # List enemy bounding boxes
 
     def updateMessages(self, messages, enemy_boxes):
         self.messages = messages
@@ -66,9 +66,9 @@ class OverlayWindow(QWidget):
         painter.drawLine(center_x - cross_size, center_y, center_x + cross_size, center_y)
         painter.drawLine(center_x, center_y - cross_size, center_x, center_y + cross_size)
 
-# Detection thread runs continuously and emits overlay messages and enemy boxes.
+# Detection thread runs continuously + emits overlay messages + enemy boxes
 class DetectionThread(QThread):
-    update_signal = pyqtSignal(list, list)  # Emits a list of messages and list of enemy boxes.
+    update_signal = pyqtSignal(list, list)  # Emits list of messages + list of enemy boxes
 
     def run(self):
         # Load models.
@@ -76,32 +76,32 @@ class DetectionThread(QThread):
         gun_model = YOLO('c:/UCLL/jaar 2/S2/Advanced Ai/Semester project/code/models/gun_class_detector.pt')
         enemy_model = YOLO('c:/UCLL/jaar 2/S2/Advanced Ai/Semester project/code/models/enemy_detector.pt')
         
-        # Move models to GPU if available.
+        # Move models -> GPU if available
         binary_model.to("cuda")
         gun_model.to("cuda")
         enemy_model.to("cuda")
         
-        # Initialize persistent gun message empty.
+        # Initialize persistent gun message empty
         prev_gun_msg = ""
         
         with mss() as sct:
-            monitor = sct.monitors[1]  # monitor for capture.
+            monitor = sct.monitors[1]  # monitor capture
             while True:
                 messages = []
-                enemy_boxes = []  # bounding boxes: each [x1, y1, x2, y2].
+                enemy_boxes = []  # bounding boxes: each [x1, y1, x2, y2]
 
                 # Capture screen image.
                 screenshot = sct.grab(monitor)
                 full_frame = np.array(screenshot)
                 full_frame = cv2.cvtColor(full_frame, cv2.COLOR_BGRA2BGR)
 
-                # Resize full_frame to 360p for gun detection (works better this way).
+                # Resize full_frame -> 360p for gun detection (works better this way)
                 height, width = full_frame.shape[:2]
                 new_height = 360
                 new_width = int((new_height / height) * width)
                 gun_frame = cv2.resize(full_frame, (new_width, new_height))
 
-                # binary prediction (gun vs no gun) on the full gun frame.
+                # binary prediction (gun vs no gun) on  full gun frame
                 binary_results = binary_model.predict(source=full_frame, conf=0.4, verbose=False)
                 binary_preds = binary_results[0]
                 if hasattr(binary_preds.probs, "cpu"):
@@ -113,10 +113,10 @@ class DetectionThread(QThread):
                 binary_confidence = np_probs_bin[predicted_binary_idx]
 
                 new_gun_msg = None
-                # Only update message when threshold is met.
+                # Only update message when threshold is met
                 if binary_confidence >= CONFIDENCE_THRESHOLD:
                     if predicted_binary_class.lower() == "gun":
-                        # classification on the 360p gun frame.
+                        # classification on 360p gun frame
                         gun_results = gun_model.predict(source=gun_frame, conf=0.4, verbose=False)
                         gun_preds = gun_results[0]
                         if hasattr(gun_preds.probs, "cpu"):
@@ -159,7 +159,7 @@ class DetectionThread(QThread):
                     else:
                         new_gun_msg = f"No gun (binary confidence: {binary_confidence:.2f})"
 
-                # If no new prediction meets threshold, keep previous message.
+                # If no new prediction meets threshold, keep previous message
                 if new_gun_msg is None:
                     new_gun_msg = prev_gun_msg
                 else:
@@ -167,7 +167,7 @@ class DetectionThread(QThread):
 
                 messages.append(new_gun_msg)
 
-                # enemy detection (using full quality image, needed for enemies far away).
+                # enemy detection (using full quality image, needed for enemies far away)
                 enemy_results = enemy_model.predict(source=full_frame, conf=0.4, verbose=False)
                 enemy_preds = enemy_results[0]
                 if enemy_preds.boxes is not None and len(enemy_preds.boxes) > 0:
@@ -175,7 +175,7 @@ class DetectionThread(QThread):
                     for box in boxes:
                         enemy_boxes.append(box.tolist())
 
-                # Emit updated messages and enemy boxes.
+                # Emit updated messages + enemy boxes.
                 self.update_signal.emit(messages, enemy_boxes)
                 time.sleep(DETECTION_DELAY)
 
