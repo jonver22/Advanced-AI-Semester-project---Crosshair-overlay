@@ -21,6 +21,8 @@ Project Structure
 ```
 .
 ├── RealTimeCrosshairOverlay.py
+├── README.md
+├── Technical Report Advanced Ai - Semester Project.docx
 └── models/
     ├── Binary_gun_nogun_detector.pt
     ├── enemy_detector.pt
@@ -68,7 +70,7 @@ Usage
    ```bash
    python RealTimeCrosshairOverlay.py
    ```
- 3. Launch the game **Rust**, or open the **example video** included in this repo in full-screen mode. The example video demonstrates the overlay in action, with the correct predictions shown in **pink** at the top right corner. The first 2 minutes focuses on testing the different gun types, and the section after that thoroughly tests the enemy detection model using large-group gameplay. You can also search for any gameplay video on **YouTube** to test the application, but note that there are many aspects to Rust beyond guns and enemies, so testing on random YouTube videos may not quickly cover all scenarios.
+ 3. Launch the game **Rust**, or open the **example video** (included in the upload zone of the project submission) in full-screen mode. The example video demonstrates the overlay in action, with the correct predictions shown in **pink** at the top right corner. The first 2 minutes focuses on testing the different gun types, and the section after that thoroughly tests the enemy detection model using large-group gameplay. You can also search for any gameplay video on **YouTube** to test the application, but note that there are many aspects to Rust beyond guns and enemies, so testing on random YouTube videos may not quickly cover all scenarios.
 
 When running, the overlay window will appear on your primary monitor, showing:
 
